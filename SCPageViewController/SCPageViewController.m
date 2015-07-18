@@ -135,7 +135,7 @@
 {
 	[super viewWillLayoutSubviews];
 	
-	[self setLayouter:self.layouter andFocusOnIndex:self.currentPage animated:YES completion:nil];
+	[self setLayouter:self.layouter andFocusOnIndex:self.currentPage animated:NO completion:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1008,13 +1008,13 @@
 	
 	UIViewController *page = [self.dataSource pageViewController:self viewControllerForPageAtIndex:pageIndex];
 	
-	NSAssert(page, @"Trying to insert nil view controller");
-	
 	SCPageViewControllerPageDetails *details = [[SCPageViewControllerPageDetails alloc] init];
 	[details setViewController:page];
 	[self.pages replaceObjectAtIndex:pageIndex withObject:details];
 	
-	[self addChildViewController:page];
+	if(page) {
+		[self addChildViewController:page];
+	}
 	
 	[page.view setAutoresizingMask:UIViewAutoresizingNone];
 	[self.scrollView addSubview:page.view];
@@ -1162,7 +1162,7 @@
 	[indexes enumerateIndexesWithOptions:NSEnumerationReverse usingBlock:^(NSUInteger pageIndex, BOOL *stop) {
 		
 		UIViewController *viewController = [self _createAndInsertNewPageAtIndex:pageIndex];
-
+		
 		// Animate the page insertion
 		if(animated && [self.layouter respondsToSelector:@selector(animatePageInsertionAtIndex:viewController:pageViewController:completion:)]) {
 			
@@ -1206,7 +1206,7 @@
 	}
 	
 	dispatch_group_notify(animationsDispatchGroup, dispatch_get_main_queue(), ^{
-
+		
 		self.insertionIndexes = nil;
 		if(completion) {
 			completion();
@@ -1233,9 +1233,13 @@
 	NSMutableArray *removedViewControllers = [NSMutableArray array];
 	
 	[indexes enumerateIndexesWithOptions:NSEnumerationReverse usingBlock:^(NSUInteger pageIndex, BOOL *stop) {
-
+		
 		UIViewController *viewController = [self viewControllerForPageAtIndex:pageIndex];
-		[removedViewControllers addObject:viewController];
+		
+		if(viewController) {
+			[removedViewControllers addObject:viewController];
+		}
+		
 		[viewController willMoveToParentViewController:nil];
 		if([self.visibleViewControllers containsObject:viewController]) {
 			[viewController beginAppearanceTransition:NO animated:animated];
