@@ -230,13 +230,13 @@
 	}
 	[self.visibleControllers removeAllObjects];
 	
-	if(oldNumberOfPages >= self.numberOfPages) {
-		NSUInteger index = MAX(0, (NSInteger)self.numberOfPages - 1);
-		[self navigateToPageAtIndex:index animated:NO completion:nil];
-	} else {
+//	if(oldNumberOfPages >= self.numberOfPages) {
+//		NSUInteger index = MAX(0, (NSInteger)self.numberOfPages - 1);
+//		[self navigateToPageAtIndex:index animated:NO completion:nil];
+//	} else {
 		[self _updateBoundsAndConstraints];
 		[self _tilePages];
-	}
+//	}
 }
 
 - (void)navigateToPageAtIndex:(NSUInteger)pageIndex
