@@ -221,7 +221,7 @@
 		[self _removePageAtIndex:pageIndex];
 	}];
 	
-	NSUInteger oldNumberOfPages = self.numberOfPages;
+//	NSUInteger oldNumberOfPages = self.numberOfPages;
 	self.numberOfPages = [self.dataSource numberOfPagesInPageViewController:self];
 	
 	[self.pages removeAllObjects];
