@@ -479,6 +479,10 @@
 	
 	for (NSUInteger pageIndex = firstNeededPageIndex; pageIndex <= lastNeededPageIndex; pageIndex++) {
 
+		if([self.insertionIndexes containsIndex:pageIndex]) {
+			continue;
+		}
+		
 		UIViewController *page = [self viewControllerForPageAtIndex:pageIndex];
 		if (!page) {
 			[self _createAndInsertNewPageAtIndex:pageIndex];
@@ -1182,6 +1186,8 @@
 	dispatch_group_notify(animationsDispatchGroup, dispatch_get_main_queue(), ^{
 		
 		self.insertionIndexes = nil;
+		[self _tilePages];
+		
 		if(completion) {
 			completion();
 		}
@@ -1284,6 +1290,8 @@
 			[viewController removeFromParentViewController];
 			[self.visibleControllers removeObject:viewController];
 		}
+		
+		[self _tilePages];
 		
 		if(completion) {
 			completion();
