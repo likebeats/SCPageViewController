@@ -1192,7 +1192,8 @@
 
 - (void)deletePagesAtIndexes:(NSIndexSet *)indexes animated:(BOOL)animated completion:(void(^)())completion
 {
-	NSInteger oldNumberOfPages = self.numberOfPages;
+    NSInteger oldNumberOfPages;
+    oldNumberOfPages = self.numberOfPages;
 	self.numberOfPages = [self.dataSource numberOfPagesInPageViewController:self];
 	NSAssert((self.numberOfPages == oldNumberOfPages - indexes.count), @"Invalid number of pages after removal. Expecting %lu and received %lu", (unsigned long)(oldNumberOfPages - indexes.count), (unsigned long)self.numberOfPages);
 	
